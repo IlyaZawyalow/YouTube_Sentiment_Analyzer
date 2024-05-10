@@ -40,18 +40,15 @@ async def get_comments(video_id: str):
         raise HTTPException(status_code=404, detail="Queue not found")
 
     messages = []
-
     while True:
         method_frame, _, body = channel.basic_get(queue_name, auto_ack=True)
-        if method_frame and body:  # Добавляем проверку на наличие данных в сообщении
-            # Декодируем JSON-сообщение
+        if method_frame and body:
             message = body.decode()
             messages.append(message)
         elif not method_frame:
             break
-
     connection.close()
-
+    
     if not messages:
         raise HTTPException(status_code=404, detail="No comments found")
     predict_sentiment, count_positive, count_negative = get_sentiment_predict(messages)
@@ -74,7 +71,6 @@ def get_sentiment_predict(comment_list: List[str]):
 
     for comment in comment_list:
         processed_comment = preprocess_text(comment)
-        # Сделаем предсказание sentiment
         predicted_label = fasttext_model.predict(processed_comment)[0][0]
         sentiment = 'positive' if predicted_label == "__label__0" else 'negative'
         if sentiment == 'positive':

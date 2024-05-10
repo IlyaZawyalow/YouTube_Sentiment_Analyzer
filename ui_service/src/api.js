@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const parsingServiceURL = 'http://localhost:8000'; // Адрес сервиса parsing_service
-const mlServiceURL = 'http://localhost:8080'; // Адрес сервиса ml_servise
+const parsingServiceURL = 'http://localhost:8000';
+const mlServiceURL = 'http://localhost:8080';
 
 const parsingServiceAPI = axios.create({
   baseURL: parsingServiceURL,
